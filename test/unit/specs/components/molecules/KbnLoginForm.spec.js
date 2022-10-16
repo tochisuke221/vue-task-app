@@ -55,13 +55,13 @@ describe('KbnLoginForm', () => {
           describe('何も入力されない', () => {
             it('validation.password.requiredがinvalidであること', () => {
               loginForm.setData({password: ''})
-              expect(loginForm.vm.validation.password.require).to.equal(false)
+              expect(loginForm.vm.validation.password.required).to.equal(false)
             })
           })
           describe('入力あり', () => {
             it('validation.password.requiredがvalidであること', () => {
               loginForm.setData({password: 'password'})
-              expect(loginForm.vm.validation.email.format).to.equal(true)
+              expect(loginForm.vm.validation.password.required).to.equal(true)
             })
           })
         })
@@ -162,7 +162,7 @@ describe('KbnLoginForm', () => {
           // クリックイベント
           loginForm.find('button').trigger('click')
           expect(onloginStub.called).to.equal(false) // まだresolveされない
-          expect(loginForm.vm.error).to.equal() // エラーメッセージは初期化
+          expect(loginForm.vm.error).to.equal('') // エラーメッセージは初期化
           expect(loginForm.vm.disableLoginAction).to.equal(true) // ログインアクションは不可
 
           // 状態の反映
@@ -172,7 +172,7 @@ describe('KbnLoginForm', () => {
             expect(authInfo.email).to.equal(loginForm.vm.email)
             expect(authInfo.password).to.equal(loginForm.vm.password)
             loginForm.vm.$nextTick(() => {
-              expect(loginForm.vm.error).to.equal('login error!') // エラーメッセージは初期状態
+              expect(loginForm.vm.error).to.equal('') // エラーメッセージは初期状態
               expect(loginForm.vm.disableLoginAction).to.equal(false) // ログインアクションは可能
 
               done()
@@ -188,7 +188,7 @@ describe('KbnLoginForm', () => {
           // クリックイベント
           loginForm.find('button').trigger('click')
           expect(onloginStub.called).to.equal(false) // まだrejectされない
-          expect(loginForm.vm.error).to.equal() // エラーメッセージは初期化
+          expect(loginForm.vm.error).to.equal('') // エラーメッセージは初期化
           expect(loginForm.vm.disableLoginAction).to.equal(true) // ログインアクションは不可
 
           // 状態の反映
