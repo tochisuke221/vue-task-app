@@ -2,7 +2,7 @@
   <form novalidate>
     <div class="form-item">
       <label for="email">メールアドレス</label>
-      <input 
+      <input
         id="email"
         v-model="email"
         type="text"
@@ -17,7 +17,7 @@
     </div>
     <div class="form-item">
       <label for="email">パスワード</label>
-      <input 
+      <input
         id="password"
         v-model="password"
         type="password"
@@ -50,7 +50,7 @@
 import KbnButton from '@/components/atoms/KbnButton'
 
 const REGEX_EMAIL = /^[A-Za-z0-9]{1}[A-Za-z0-9_.-]*@{1}[A-Za-z0-9_.-]+.[A-Za-z0-9]+$/
-const required = val => !! val.trim()
+const required = val => !!val.trim()
 
 export default{
   name: 'KbnLoginForm',
@@ -93,10 +93,10 @@ export default{
       const fields = Object.keys(validation)
       let valid = true
 
-      for(let i = 0, i < fields.length, i++) {
-        const filed = fields[i]
+      for (let i = 0; i < fields.length; i++) {
+        const field = fields[i]
         valid = Object.keys(validation[field])
-           .every(key => validation[field][key])
+          .every(key => validation[field][key])
         if (!valid) { break }
       }
       return valid

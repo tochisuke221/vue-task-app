@@ -4,8 +4,12 @@ import { Auth, List, Tas } from '../api'
 /* eslint-enable no-unused-vars */
 
 export default {
-  login: ({commit}) => {
-    throw new Error(' login action は作られていません')
+  login: ({ commit }, authInfo) => {
+    return Auth.login(authInfo)
+      .then(({ token, userId }) => {
+        commit(types.AUTH_LOGIN, { token, userId })
+      })
+      .catch(err => { throw err })
   },
   fetchLists: ({commit}) => {
     throw new Error(' fetchLists action は作られていません')
