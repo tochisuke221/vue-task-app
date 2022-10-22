@@ -1,6 +1,6 @@
 # kanban-app
 
-> A kanban application
+> A Kanban Application
 
 ## Build Setup
 

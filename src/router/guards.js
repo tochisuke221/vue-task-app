@@ -13,6 +13,8 @@ export const authorizeToken = (to, from, next) => {
     } else {
       next()
     }
+  } else if (to.path === '/login' && store.state.auth.token) {
+    next({ path: '/' })
   } else {
     next()
   }

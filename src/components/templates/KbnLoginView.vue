@@ -17,6 +17,7 @@ export default {
 
   methods: {
     handleLogin (authInfo) {
+      debugger
       return this.$store.dispatch('login', authInfo)
         .then(() => {
           this.$router.push({ path: '/' })
