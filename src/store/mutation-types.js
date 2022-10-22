@@ -1,4 +1,3 @@
-// mutationのタイプを定数として定義しておく
 export const AUTH_LOGIN = 'AUTH_LOGIN'
 export const FETCH_ALL_TASKLIST = 'FETCH_ALL_TASKLIST'
 export const ADD_TASK = 'ADD_TASK'

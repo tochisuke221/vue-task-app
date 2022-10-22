@@ -6,19 +6,19 @@ import mutations from './mutations'
 
 Vue.use(Vuex)
 
-// 状態"Auth”と”Board”をいVuexのstateで一元管理
+// 状態`Auth`と状態`Board`をVuexのstateで一元管理できるよう定義する
 const state = {
-  auth: {
-    token: null, // 初期状態はnull
-    userId: null // 初期状態はnull
+  auth: { // 状態`Auth`
+    token: null, // `token`はnullで初期化
+    userId: null // `userId`はnullで初期化
   },
-  board: {
-    lists: [] // 状態TaskListtは空が初期状態
+  board: { // 状態`Board`
+    lists: [] // 状態`TaskList`は空で初期化
   }
 }
 
 export default new Vuex.Store({
-  state,
+  state, // 定義したstateを`state`オプションに指定
   getters,
   actions,
   mutations,

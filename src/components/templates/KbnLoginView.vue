@@ -1,12 +1,12 @@
 <template>
   <div class="login-view">
     <h1>Kanban App</h1>
-    <KbnLoginForm :onlogin="handleLogin"></KbnLoginForm>
+    <KbnLoginForm :onlogin="handleLogin" />
   </div>
 </template>
 
 <script>
-import KbnLoginForm from '@/components/molecules/KbnLoginForm'
+import KbnLoginForm from '@/components/molecules/KbnLoginForm.vue'
 
 export default {
   name: 'KbnLoginView',
@@ -17,7 +17,7 @@ export default {
 
   methods: {
     handleLogin (authInfo) {
-      return this.$store.dispach('login', authInfo)
+      return this.$store.dispatch('login', authInfo)
         .then(() => {
           this.$router.push({ path: '/' })
         })
@@ -29,7 +29,7 @@ export default {
 </script>
 
 <style scoped>
-.login-form {
+.login-view {
   width: 320px;
   margin: auto;
 }
