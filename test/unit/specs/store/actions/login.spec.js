@@ -1,13 +1,11 @@
-import Vue from 'vue'
-import * as types from '@store/mutation-types'
+import * as types from '@/store/mutation-types'
 
-// ログインアクション内の依存関係をモック化する
-
+// loginアクション内の依存関係をモック化する
 const mockLoginAction = login => {
-  // inject-loaderを使ってアクション内の依存関係をモックするための注入関数を取得
+  // inject-loaderを使ってアクション内の依存関係をモック化するための注入関数を取得する
   const actionsInjector = require('inject-loader!@/store/actions')
 
-  // 注入関数でAuth APIモジュールをモック化
+  // 注入関数でAuth APIモジュールをモック化する
   const actionsMocks = actionsInjector({
     '../api': {
       Auth: { login }
@@ -18,23 +16,23 @@ const mockLoginAction = login => {
 }
 
 describe('loginアクション', () => {
-  const address = 'test@example.com'
-  const password = '12345'
+  const address = 'foo@domain.com'
+  const password = '12345678'
   let commit
   let future
 
-  describe('Auth loginが成功', () => {
-    const token = '123456789abcd'
+  describe('Auth.loginが成功', () => {
+    const token = '1234567890abcdef'
     const userId = 1
 
     beforeEach(done => {
       const login = authInfo => Promise.resolve({ token, userId })
       const action = mockLoginAction(login)
-      commit = sinon.pry()
+      commit = sinon.spy()
 
       // loginアクションの実行
-      future = action({commit}, { address, password })
-      Vue.nextTick(done)
+      future = action({ commit }, { address, password })
+      future.then(() => done())
     })
 
     it('成功となること', () => {
@@ -45,22 +43,23 @@ describe('loginアクション', () => {
       expect(commit.args[0][1].userId).to.equal(userId)
     })
   })
-  describe('Auth loginが失敗', () => {
+
+  describe('Auth.loginが失敗', () => {
     beforeEach(done => {
-      const login = authInfo => Promise.resolve(new Error('login failed'))
+      const login = authInfo => Promise.reject(new Error('login failed'))
       const action = mockLoginAction(login)
-      commit = sinon.pry()
+      commit = sinon.spy()
 
       // loginアクションの実行
       future = action({ commit })
-      Vue.nextTick(done)
+      future.catch(() => done())
     })
 
     it('失敗となること', done => {
       // commitが呼ばれていないかチェック
       expect(commit.called).to.equal(false)
 
-      // エラ-が投げられているかチェック
+      // エラーが投げられているかチェック
       future.catch(err => {
         expect(err.message).to.equal('login failed')
         done()

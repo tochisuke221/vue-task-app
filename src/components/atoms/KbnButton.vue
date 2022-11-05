@@ -5,7 +5,7 @@
     type="button"
     @click="handleClick"
   >
-    <slot></slot>
+    <slot />
   </button>
 </template>
 
@@ -25,14 +25,15 @@ export default {
   },
 
   computed: {
-    // typeに応じて動的にクラスを作成
+    // `type`に応じてクラスを動的に生成する
     classes () {
       const cls = this.type === 'text' ? ('-' + this.type) : ''
-      return ['kbn-button' + cls]
+      return [`kbn-button${cls}`]
     }
   },
+
   methods: {
-    // clickイベント
+    // `click`イベントを発行
     handleClick (ev) {
       this.$emit('click', ev)
     }
@@ -46,7 +47,7 @@ export default {
 }
 .kbn-button-text {
   border: none;
-  padding-left: 0;
   padding-right: 0;
+  padding-left: 0;
 }
 </style>

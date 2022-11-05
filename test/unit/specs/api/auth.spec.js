@@ -1,6 +1,6 @@
-import axios from 'vuex'
+import axios from 'axios'
 
-// Aith APIモジュールで利用するHTTPクライアントをモック化
+// Auth APIモジュールで利用するHTTPクライアントをモック化
 const mockAuth = adapter => {
   const injector = require('inject-loader!@/api/auth')
   const clientMock = injector({
@@ -11,13 +11,13 @@ const mockAuth = adapter => {
 
 describe('Auth APIモジュール', () => {
   describe('login', () => {
-    const token = '1123456789'
+    const token = '1234567890abcdef'
     const userId = 1
-    const address = 'test@example.com'
-    const password = '123456'
+    const address = 'foo@domain.com'
+    const password = '12345678'
 
     describe('成功', () => {
-      it('token, userIdが取得できること', done => {
+      it('token、userIdが取得できること', done => {
         const adapter = config => {
           return new Promise((resolve, reject) => {
             resolve({ data: { token, userId }, status: 200 })
@@ -36,11 +36,11 @@ describe('Auth APIモジュール', () => {
 
     describe('失敗', () => {
       it('エラーメッセージを取得できること', done => {
-        const msg = 'failed login'
+        const message = 'failed login'
         const adapter = config => {
           return new Promise((resolve, reject) => {
-            const err = new Error(msg)
-            err.response = { data: { msg }, status: 401 }
+            const err = new Error(message)
+            err.response = { data: { message }, status: 401 }
             reject(err)
           })
         }
@@ -48,8 +48,9 @@ describe('Auth APIモジュール', () => {
         const auth = mockAuth(adapter)
         auth.login({ address, password })
           .catch(err => {
-            expect(err.msg).to.equal(msg)
+            expect(err.message).to.equal(message)
           })
+          .then(done)
       })
     })
   })

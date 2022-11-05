@@ -2,16 +2,19 @@ import store from '../store'
 
 export const authorizeToken = (to, from, next) => {
   if (to.matched.some(record => record.meta.requiresAuth)) {
-    // マッチしたルートにおいてメタフィールドにrequiresAuthが付与されている場合、
-    // ログインした際に付与される認証トークンがあるかをチェック
-    // 本来ならAPI経由で認証トークンをバックエンド側に送って検証すべきだが有無のみで判断する
+    // マッチしたルートにおいて、メタフィールドに`requiresAuth`が付与されている場合は
+    // ログインした際に付与される認証トークンがあるかどうかチェックする
+    // 注意:
+    // このアプリケーションでは簡略化のため`auth.token`があるかどうかのみで
+    // ログイン済みであるかどうかチェックしているが、
+    // 本来ならば付与された認証トークンをバックエンドのAPI経由などで検証すべき
     if (!store.state.auth || !store.state.auth.token) {
-      next({
-        path: '/login'
-      })
+      next({ path: '/login' })
     } else {
       next()
     }
+  } else if (to.path === '/login' && store.state.auth.token) {
+    next({ path: '/' })
   } else {
     next()
   }
