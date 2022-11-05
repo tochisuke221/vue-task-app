@@ -7,20 +7,18 @@ const App = {
   name: 'app',
   render: h => h('router-view')
 }
-
 // Topコンポーネント
 const Top = {
   name: 'top',
   render: h => h('p', ['top'])
 }
-
 // Loginコンポーネント
 const Login = {
   name: 'login',
   render: h => h('p', ['login'])
 }
 
-// ナビゲーションガードを実装するファイルで依存するVuex Storeをモック化するヘルパー関数
+// ナビゲーションガードを実装するファイル内で依存するVuex Storeをモック化するヘルパー関数
 const mockAuthorizeToken = store => {
   const injector = require('inject-loader!@/router/guards')
   const storeMock = injector({
@@ -69,7 +67,7 @@ describe('beforeEachガードフック', () => {
     it('そのまま解決すること', () => {
       const app = setup({
         auth: {
-          token: '123456789',
+          token: '1234567890abcdef',
           userId: 1
         }
       })
@@ -78,8 +76,8 @@ describe('beforeEachガードフック', () => {
   })
 
   describe('認証トークンなし', () => {
-    it('/loginにリダイレクトして解決すること', () => {
-      const app = setup({})
+    it('/login にリダレクトして解決すること', () => {
+      const app = setup({ auth: {} })
       expect(app.text()).to.equal('login')
     })
   })

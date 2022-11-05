@@ -1,6 +1,6 @@
 <template>
   <span :class="classes">
-    {{icon}}
+    {{ icon }}
   </span>
 </template>
 
@@ -25,7 +25,6 @@ export default {
 
     icon () {
       const name = this.name
-
       if (name === 'close' || name === 'remove') {
         return 'x'
       } else if (name === 'add') {

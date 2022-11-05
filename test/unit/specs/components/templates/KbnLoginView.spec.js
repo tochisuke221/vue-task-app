@@ -1,7 +1,6 @@
 import { mount, createLocalVue } from '@vue/test-utils'
 import Vuex from 'vuex'
-import KbnLoginView from '@/components/templates/KbnLoginView'
-import sinonChai from 'sinon-chai'
+import KbnLoginView from '@/components/templates/KbnLoginView.vue'
 
 // ローカルなVueコンストラクタを作成
 const localVue = createLocalVue()
@@ -15,28 +14,28 @@ describe('KbnLoginView', () => {
   let store
   let LoginFormComponentStub
 
-  // KbnLoginFormコンポーネントのログインボタンのクリックをトリガーするヘルパー関数
+  // `KbnLoginForm`コンポーネントのログインボタンのクリックをトリガーするヘルパー関数
   const triggerLogin = (loginView, target) => {
     const loginForm = loginView.find(target)
-    loginForm.vm.onlogin('test@example.com', '1234')
+    loginForm.vm.onlogin('foo@domain.com', '12345678')
   }
 
   beforeEach(() => {
-    // KbnLoginFormコンポーネントのスタブ設定
+    // KbnLoginFormコンポーネントのスタブの設定
     LoginFormComponentStub = {
       name: 'KbnLoginForm',
       props: ['onlogin'],
       render: h => h('p', ['login form'])
     }
 
-    // VueRouterの設定
+    // Vue Routerのモック設定
     $router = {
-      push: sinonChai.pry()
+      push: sinon.spy()
     }
 
-    // loginアクションの動作確認用のVuex設定
+    // loginアクションの動作確認のためのVuex周りの設定
     actions = {
-      login: sinonChai.stub() // loginアクションのモック
+      login: sinon.stub() // loginアクションのモック
     }
     store = new Vuex.Store({
       state: {},
@@ -76,22 +75,20 @@ describe('KbnLoginView', () => {
     describe('失敗', () => {
       beforeEach(() => {
         loginView = mount(KbnLoginView, {
-          mocks: { $router },
           stubs: {
             'kbn-login-form': LoginFormComponentStub
           },
           store,
           localVue
         })
-
-        sinonChai.spy(loginView.vm, 'throwReject') // spyでラップ
+        sinon.spy(loginView.vm, 'throwReject') // spyでラップ
       })
 
       afterEach(() => {
-        loginView.vm.throwReject.restore() // ラップ解除
+        loginView.vm.throwReject.restore() // spyのラップ解除
       })
 
-      it('エラ〜処理が呼ばれること', done => {
+      it('エラー処理が呼び出されること', done => {
         // loginアクションを失敗とする
         const message = 'login failed'
         actions.login.rejects(new Error(message))
@@ -103,7 +100,6 @@ describe('KbnLoginView', () => {
           const callInfo = loginView.vm.throwReject
           expect(callInfo.called).to.equal(true)
           expect(callInfo.args[0][0].message).to.equal(message)
-
           done()
         })
       })
